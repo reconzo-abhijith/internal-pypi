@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "internal-pypi"
+authors = [{name = "Abhijith Nayak", email = "abhijith@reconzo.com"}]
+dynamic = ["version", "description"]
+license = "MIT"
+
+[project.urls]
+Home = "https://github.com/reconzo-abhijith/internal-pypi"
+
+[project.optional-dependencies]
+test = ["pytest", "mypy", "pytest-timer[termcolor]", "pytest-cov"]
+build = ["flit"]
+dev = ["ipython"]
