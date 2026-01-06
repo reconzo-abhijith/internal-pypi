@@ -3,6 +3,7 @@
 __version__ = "0.1.0"
 
 import re
+import shutil
 from pathlib import Path
 
 
@@ -16,14 +17,23 @@ def normalize(name):
     return re.sub(r"[-_.]+", "-", name).lower()
 
 
-def get_package_names(repo: str) -> list[str]:
-    repo_path = Path(repo)
-    dirs = [item for item in repo_path.iterdir() if item.is_dir()]
+def get_package_names(reponame: str) -> list[str]:
+    repopath = Path(reponame)
+    dirs = [item for item in repopath.iterdir() if item.is_dir()]
     if not dirs:
         raise ValueError("No package folders found.")
     if not all(str(dirname).isascii() for dirname in dirs):
         raise ValueError("Non ascii characters found in package names.")
     return [normalize(str(dirname.stem)) for dirname in dirs]
+
+
+def backup_file(reponame: str, filename: str = "index.html") -> Path:
+    filepath = Path(reponame) / filename
+    source_filename = str(filepath)
+    backup_filename = source_filename + ".bak"
+    if filepath.exists():
+        shutil.copyfile(source_filename, backup_filename, follow_symlinks=False)
+    return Path(backup_filename)
 
 
 def update_root_index_html(): ...

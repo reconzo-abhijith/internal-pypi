@@ -7,6 +7,12 @@ import internal_pypi
 
 
 @pytest.fixture
+def temp_file():
+    with tempfile.NamedTemporaryFile() as tmpfile:
+        yield tmpfile.name
+
+
+@pytest.fixture
 def temp_folder():
     with tempfile.TemporaryDirectory() as tmpdir:
         yield tmpdir
@@ -61,3 +67,18 @@ def test_valid_structure(folder_with_valid_folders):
 def test_name_normalization():
     assert internal_pypi.normalize("...---...__") == "-"
     assert internal_pypi.normalize("...aba--...__") == "-aba-"
+
+
+def test_file_backup(temp_folder, temp_file):
+    source_file = Path(temp_folder) / temp_file
+    backed_up_file = internal_pypi.backup_file(temp_folder, filename=temp_file)
+    assert backed_up_file.exists() == source_file.exists()
+
+
+def test_file_backup_nonexistent():
+    # This basically ensures that if the file is absent, then the backup is too.
+    ne_folder = r"/does/not"
+    ne_file = "exist.txt"
+    source_file = Path(ne_folder) / ne_file
+    backed_up_file = internal_pypi.backup_file(ne_folder, filename=ne_file)
+    assert backed_up_file.exists() == source_file.exists()
