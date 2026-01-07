@@ -9,3 +9,6 @@ syntax: glob
 .mypy_cache/*
 secrets/*
 .pytest_cache/*
+prod_repo/*
+level1/*
+**/index.html

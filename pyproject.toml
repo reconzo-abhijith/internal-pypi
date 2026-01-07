@@ -12,6 +12,6 @@ license = "MIT"
 Home = "https://github.com/reconzo-abhijith/internal-pypi"
 
 [project.optional-dependencies]
-test = ["pytest", "mypy", "pytest-timer[termcolor]", "pytest-cov"]
+test = ["pytest", "mypy", "pytest-timer[termcolor]", "pytest-cov", "beautifulsoup4"]
 build = ["flit"]
 dev = ["ipython"]
